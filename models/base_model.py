@@ -32,16 +32,24 @@ class BaseModel():
         __str__(self)
     """
 
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
         """Initiates instance attributes
+        Args:
+            *args (tuple) : holds anonymous arguments
+            **kwargs (dict) : holds key/values arguments
         Attributes:
             id (uuid.UUID) : id of the object
             created_at (datetime.datetime) : time of creation
             updated_at (datetime.datetime) : time of last modifications
         """
-        self.id = str(uuid.uuid4())
-        self.created_at = datetime.now()
-        self.updated_at = self.created_at
+        if (kwargs and len(kwargs) == 4):
+            self.id = kwargs['id']
+            self.created_at = datetime.fromisoformat(kwargs['created_at'])
+            self.updated_at = datetime.fromisoformat(kwargs['updated_at'])
+        else:
+            self.id = str(uuid.uuid4())
+            self.created_at = datetime.now()
+            self.updated_at = self.created_at
 
     def save(self):
         """updates updated_at to the current time
