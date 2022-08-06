@@ -6,10 +6,10 @@ and time of last update
 It can update the object with current time.
 It can return a dictionary containing all keys/value of the instance __dict__
 """
-
-
 import uuid  # generate uuid with uuid.uuid4()
 from datetime import datetime  # generate time with datetime.now()
+
+from models import storage
 
 
 class BaseModel():
@@ -42,29 +42,37 @@ class BaseModel():
             created_at (datetime.datetime) : time of creation
             updated_at (datetime.datetime) : time of last modifications
         """
-        if (kwargs and len(kwargs) == 4):
-            self.id = kwargs['id']
+        if (kwargs and len(kwargs) >= 4):
             self.created_at = datetime.fromisoformat(kwargs['created_at'])
             self.updated_at = datetime.fromisoformat(kwargs['updated_at'])
+            for key in kwargs.keys():
+                if (key not in ['__class__', 'created_at', 'updated_at']):
+                    self.__setattr__(key, kwargs[key])
         else:
             self.id = str(uuid.uuid4())
             self.created_at = datetime.now()
             self.updated_at = self.created_at
+            storage.new(self)
 
     def save(self):
         """updates updated_at to the current time
         """
         self.updated_at = datetime.now()
+        storage.save()
 
     def to_dict(self):
         """converts self to a dictionary with a key/value pair for
         each instance attribute
         """
-        return {'__class__': self.__class__, 'id': self.id,
-                'created_at': self.created_at.isoformat(),
-                'updated_at': self.updated_at.isoformat()}
+        result = {'__class__': 'BaseModel',
+                  'created_at': self.created_at.isoformat(),
+                  'updated_at': self.updated_at.isoformat()}
+        for key in self.__dict__.keys():
+            if (key not in ['created_at', 'updated_at']):
+                result[key] = self.__dict__[key]
+        return (result)
 
     def __str__(self):
         """Representation of a BaseModel object as a string
         """
-        return ("[{}] ({}) {}".format(self.__class__, self.id, self.__dict__))
+        return ("[{}] ({}) {}".format(self.to_dict()['__class__'], self.id, self.__dict__))

@@ -22,8 +22,8 @@ class TestBaseModel(unittest.TestCase):
         uuid_pat = re.compile(
                 r"^[\da-f]{8}(\-[\da-f]{4}){3}\-[\da-f]{12}$")
         self.assertIsNotNone(uuid_pat.fullmatch(obj.id))
-        self.assertEqual("[{}] ({}) {}".format(obj.__class__, obj.id,
-                         obj.__dict__), obj.__str__())
+        self.assertEqual("[BaseModel] ({}) {}".format(obj.id, obj.__dict__),
+                         obj.__str__())
         self.assertEqual(type(ctrl_time), type(obj.created_at))
         self.assertIs(obj.created_at, obj.updated_at)
 
@@ -31,13 +31,26 @@ class TestBaseModel(unittest.TestCase):
         """tests obj.save() and obj.to_dict for correct output
         """
         obj = BaseModel()
+        obj.type = "appartment"
+        obj.city = "Cotonou"
+        obj.room = 3
+        obj.area = 70
         time_pat = re.compile(
                 r"^\d{4}(\-\d{2}){2}T(\d{2}:){2}\d{2}(\.\d{6})?$")
         obj.save()
         self.assertEqual(datetime, type(obj.updated_at))
+        self.assertEqual(3, obj.room)
+        self.assertEqual(70, obj.area)
+        self.assertEqual("Cotonou", obj.city)
+        self.assertEqual("appartment", obj.type)
         self.assertNotEqual(obj.created_at, obj.updated_at)
+        self.assertEqual(8, len(obj.to_dict()))
         self.assertIsNotNone(time_pat.fullmatch(obj.to_dict()['created_at']))
         self.assertIsNotNone(time_pat.fullmatch((obj.to_dict())['updated_at']))
+        self.assertEqual(3, obj.to_dict()['room'])
+        self.assertEqual(70, obj.to_dict()['area'])
+        self.assertEqual("Cotonou", obj.to_dict()['city'])
+        self.assertEqual("appartment", obj.to_dict()['type'])
 
 
 if (__name__ == 'main'):
