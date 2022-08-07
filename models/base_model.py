@@ -9,7 +9,7 @@ It can return a dictionary containing all keys/value of the instance __dict__
 import uuid  # generate uuid with uuid.uuid4()
 from datetime import datetime  # generate time with datetime.now()
 
-from models import storage
+import models
 
 
 class BaseModel():
@@ -20,6 +20,9 @@ class BaseModel():
         id (UUID)
         created_at (time)
         updated_at (time)
+
+        /* public class attribute */
+        obj_list (list)
 
     Functions:
         __init__(self)
@@ -52,19 +55,19 @@ class BaseModel():
             self.id = str(uuid.uuid4())
             self.created_at = datetime.now()
             self.updated_at = self.created_at
-            storage.new(self)
+            models.storage.new(self)
 
     def save(self):
         """updates updated_at to the current time
         """
         self.updated_at = datetime.now()
-        storage.save()
+        models.storage.save()
 
     def to_dict(self):
         """converts self to a dictionary with a key/value pair for
         each instance attribute
         """
-        result = {'__class__': 'BaseModel',
+        result = {'__class__': self.__class__.__name__,
                   'created_at': self.created_at.isoformat(),
                   'updated_at': self.updated_at.isoformat()}
         for key in self.__dict__.keys():
@@ -75,4 +78,5 @@ class BaseModel():
     def __str__(self):
         """Representation of a BaseModel object as a string
         """
-        return ("[{}] ({}) {}".format(self.to_dict()['__class__'], self.id, self.__dict__))
+        return ("[{}] ({}) {}".format(self.__class__.__name__,
+                self.id, self.__dict__))

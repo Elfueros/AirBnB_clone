@@ -20,10 +20,10 @@ class TestBaseModel(unittest.TestCase):
         """sets objects for the tests
         """
         try:
-            with open("airbnb.json", "r", encoding="utf-8") as f:
+            with open("file.json", "r", encoding="utf-8") as f:
                 self.load = f.read()
         except FileNotFoundError:
-            with open("airbnb.json", "w+", encoding="utf-8") as f:
+            with open("file.json", "w+", encoding="utf-8") as f:
                 self.load = f.read()
         self.obj_num1 = len(storage.all())
         self.obj = BaseModel()

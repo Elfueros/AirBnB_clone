@@ -69,8 +69,8 @@ class TestBaseModel(unittest.TestCase):
         # str
         self.assertEqual("[{}] ({}) {}".format(self.obj.to_dict()['__class__'],
                          self.obj.id, self.obj.__dict__), self.obj.__str__())
-        self.assertEqual("[{}] ({}) {}".format(self.obj2.to_dict()['__class__']
-                         , self.obj2.id, self.obj2.__dict__),
+        self.assertEqual("[{}] ({}) {}".format(self.obj2.to_dict()['__class__'],
+                         self.obj2.id, self.obj2.__dict__),
                          self.obj2.__str__())
         # save
         self.assertEqual(datetime, type(self.obj1.updated_at))

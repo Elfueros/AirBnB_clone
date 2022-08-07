@@ -5,6 +5,8 @@ to a JSON file and deserializes JSON file to instances
 """
 import json
 
+from models.base_model import BaseModel
+
 
 class FileStorage():
     """Definition the class FileStorage
@@ -22,35 +24,41 @@ class FileStorage():
         reload(self)
     """
 
-    __file_path = "airbnb.json"
+    __file_path = "file.json"
     __objects = {}
 
     def all(self):
         """returns the dictionary __objects
         """
-        return (FileStorage.__objects)
+        return (self.__objects)
 
     def new(self, obj):
         """sets in __object the object obj with the key
         <class name>.id
         """
         try:
-            key = obj.to_dict()['__class__'] + "." + obj.id
-            FileStorage.__objects[key] = obj.to_dict()
+            key = obj.__class__.__name__ + "." + obj.id
+            self.__objects[key] = obj
         except (AttributeError):
-            raise TypeError("only BaseModel instances can be send to storage.new()")
+            raise TypeError("Only BaseModel instances can be storage.new()")
 
     def save(self):
         """serializes __objects to the json file
         """
-        with open(FileStorage.__file_path, 'w', encoding="utf-8") as f:
-            json.dump(FileStorage.__objects, f)
+        load_dict = {}
+        for (key, value) in self.__objects.items():
+            load_dict[key] = value.to_dict()
+        with open(self.__file_path, 'w', encoding="utf-8") as f:
+            json.dump(load_dict, f)
 
     def reload(self):
         """deserializes the json file to __objects
         """
         try:
-            with open(FileStorage.__file_path, 'r', encoding="utf-8") as f:
-                FileStorage.__objects = json.load(f)
+            with open(self.__file_path, 'r', encoding="utf-8") as f:
+                load_dict = json.load(f)
+            for (key, value) in load_dict.items():
+                obj = BaseModel(**value)
+                self.__objects[key] = obj
         except FileNotFoundError:
             pass
