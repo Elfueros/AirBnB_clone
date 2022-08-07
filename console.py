@@ -119,7 +119,7 @@ class HBNBCommand(cmd.Cmd):
             print(self.err_msg2)
         else:
             for (key, obj) in storage.all().items():
-                if (key == "BaseModel"):
+                if (obj.__class__.__name__ == "BaseModel"):
                     print(obj)
 
     def do_update(self, line):
