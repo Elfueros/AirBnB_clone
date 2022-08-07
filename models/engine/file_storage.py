@@ -6,15 +6,19 @@ to a JSON file and deserializes JSON file to instances
 import json
 
 from models.base_model import BaseModel
+from models.user import User
 
 
 class FileStorage():
     """Definition the class FileStorage
+    It stores all instances of the program and serializes and deserializes
+    them when needed
 
     Attributes:
         /* private class attributes */
         __file_path (str) : path to the json file
         __objects (dict) : stores the objects saved by FileStorage
+        __class_list (dict) : stores all the class of the program
 
     Functions:
         /* Public instances methods */
@@ -26,6 +30,7 @@ class FileStorage():
 
     __file_path = "file.json"
     __objects = {}
+    __class_list = {'BaseModel': BaseModel, 'User': User}
 
     def all(self):
         """returns the dictionary __objects
@@ -58,7 +63,8 @@ class FileStorage():
             with open(self.__file_path, 'r', encoding="utf-8") as f:
                 load_dict = json.load(f)
             for (key, value) in load_dict.items():
-                obj = BaseModel(**value)
+                obj_class = self.__class_list[value['__class__']]
+                obj = obj_class(**value)
                 self.__objects[key] = obj
         except FileNotFoundError:
             pass

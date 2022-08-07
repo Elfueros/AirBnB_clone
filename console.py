@@ -5,6 +5,7 @@ It defines a custom shell to control the airbnb application
 import cmd
 
 from models.base_model import BaseModel
+from models.user import User
 from models import storage
 
 class HBNBCommand(cmd.Cmd):
@@ -14,6 +15,10 @@ class HBNBCommand(cmd.Cmd):
         intro (str) : the message that is print at the launch of the console
         prompt (str) : the prompt on every line of the console
         file () : i don't know
+
+        /* private class attribute */
+        __class_list (dict) : list of all classes
+
     Functions:
         /* public instance methods */
         help()
@@ -30,6 +35,7 @@ class HBNBCommand(cmd.Cmd):
     """
 
     prompt = "(hbnb) "
+    __class_list = {'BaseModel': BaseModel, 'User': User}
 
 #    time_pat = re.compile(
 #                r'^\d{4}(\-\d{2}){2}T(\d{2}:){2}\d{2}(\.\d{6})?$')
@@ -44,19 +50,22 @@ class HBNBCommand(cmd.Cmd):
     err_msg6 = "** value missing **"
 
     def do_create(self, line):
-        """Command create : Creates a new object (BaseModel) and prints its id
-        Usage : $ create BaseModel
+        """Command create : Creates a new object given its class
+        and prints its id
+        Usage : $ create <class name>
         Args:
             line (str) : console line holding the class name of the object
         """
         if (line == ""):
             print(self.err_msg1)
-        elif (line != "BaseModel"):
-            print(self.err_msg2)
-        else:
-            obj = BaseModel()
-            obj.save()
-            print(obj.id)
+            return
+        for key in self.__class_list.keys():
+            if (key == line):
+                obj = self.__class_list[key]()
+                obj.save()
+                print(obj.id)
+                return
+        print(self.err_msg2)
 
     def do_show(self, line):
         """Command show : prints the string representation of an object
@@ -65,21 +74,23 @@ class HBNBCommand(cmd.Cmd):
             line (str) : console line holding the object's class name and id
         """
         args = line.split()
-        if (len(args) == 0):
+        if (len(args) == 0):                  # checks if a class is given
             print(self.err_msg1)
             return
-        if (args[0] != "BaseModel"):
-            print(self.err_msg2)
-            return
-        if (len(args) == 1):
-            print(self.err_msg3)
-            return
-        obj_key = args[0] + "." + args[1]
-        for (key, obj) in storage.all().items():
-            if (obj_key == key):
-                print(obj)
+        for key1 in self.__class_list.keys():  # checks if class exist
+            if (args[0] == key1):
+                if (len(args) == 1):          # checks if an id is given
+                    print(self.err_msg3)
+                    return
+                obj_key = args[0] + "." + args[1]
+                # checks if the object exists currently and prints it
+                for (key2, obj) in storage.all().items():
+                    if (obj_key == key2):
+                        print(obj)
+                        return
+                print(self.err_msg4)
                 return
-        print(self.err_msg4)
+        print(self.err_msg2)
 
     def do_destroy(self, line):
         """Command destroy : deletes an object given its class name and id
@@ -88,22 +99,24 @@ class HBNBCommand(cmd.Cmd):
             line (str) : console line holding the object's class name and id
         """
         args = line.split()
-        if (len(args) == 0):
+        if (len(args) == 0):                  # checks if a class is given
             print(self.err_msg1)
             return
-        if (args[0] != "BaseModel"):
-            print(self.err_msg2)
-            return
-        if (len(args) == 1):
-            print(self.err_msg3)
-            return
-        obj_key = args[0] + "." + args[1]
-        for key in storage.all().keys():
-            if (obj_key == key):
-                del(storage.all()[key])
-                storage.save()
+        for key1 in self.__class_list.keys():  # checks if class exist
+            if (args[0] == key1):
+                if (len(args) == 1):          # checks if an id is given
+                    print(self.err_msg3)
+                    return
+                obj_key = args[0] + "." + args[1]
+                # checks if the object exists currently and deletes it
+                for (key2, obj) in storage.all().items():
+                    if (obj_key == key2):
+                        del(storage.all()[key])
+                        storage.save()
+                        return
+                print(self.err_msg4)
                 return
-        print(self.err_msg4)
+        print(self.err_msg2)
 
     def do_all(self, line):
         """Command all : prints all objects string representaion
@@ -115,12 +128,13 @@ class HBNBCommand(cmd.Cmd):
         if (line == ""):
             for key in storage.all().keys():
                 print(storage.all()[key])
-        elif (line != "BaseModel"):
-            print(self.err_msg2)
-        else:
-            for (key, obj) in storage.all().items():
-                if (obj.__class__.__name__ == "BaseModel"):
+            return
+        if (line in self.__class_list.keys()):
+            for obj in storage.all().values():
+                if (line == obj.__class__.__name__):
                     print(obj)
+            return
+        print(self.err_msg2)
 
     def do_update(self, line):
         """Command update : updates an object given its class name,id,
@@ -131,33 +145,44 @@ class HBNBCommand(cmd.Cmd):
             line (str) : console line holding the object's class name and id
         """
         args = line.split()
-        if (len(args) == 0):
+        if (len(args) == 0):                  # checks if a class is given
             print(self.err_msg1)
             return
-        if (args[0] != "BaseModel"):
-            print(self.err_msg2)
-            return
-        if (len(args) == 1):
-            print(self.err_msg3)
-            return
-        obj_key = args[0] + "." + args[1]
-        for (key,obj) in storage.all().items():
-            if (obj_key == key):
-                if (len(args) == 2):
-                    print(self.err_msg5)
+        for key1 in self.__class_list.keys():  # checks if class exist
+            if (args[0] == key1):
+                if (len(args) == 1):          # checks if an id is given
+                    print(self.err_msg3)
                     return
-                if (len(args) == 3):
-                    print(self.err_msg6)
-                    return
-                if (args[2] not in
-                    ['id', 'created_at', 'updated_at', '__class__']):
-                    cast = type(eval(args[3]))
-                    new_arg = args[3].strip("'")
-                    new_arg = new_arg.strip('"')
-                    obj.__setattr__(args[2], cast(new_arg))
-                    storage.save()
-                    return
-        print(self.err_msg4)
+                obj_key = args[0] + "." + args[1]
+                # checks if the object exists currently
+                for (key2, obj) in storage.all().items():
+                    if (obj_key == key2):
+                        if (len(args) == 2):  # cheks if an attribute is given
+                            print(self.err_msg5)
+                            return
+                        if (len(args) == 3):  # cheks if a value is given
+                            print(self.err_msg6)
+                            return
+                        # adds the new attribute to the object
+                        if (args[2] not in
+                            ['id', 'created_at', 'updated_at', '__class__']):
+                            # find type of attribute and remove its limiter
+                            try:
+                                i = 1
+                                while (args[3][-1] not in ["'", '"']):
+                                    args[3] = args[3] + " " + args[3 + i]
+                                    i += 1
+                            except IndexError:
+                                print("value must be quoted")
+                            cast = type(eval(args[3]))
+                            new_arg = args[3].strip("'")
+                            new_arg = new_arg.strip('"')
+                            obj.__setattr__(args[2], cast(new_arg))
+                            storage.save()
+                            return
+                print(self.err_msg4)
+                return
+        print(self.err_msg2)
 
     def do_quit(self, line):
         """Command quit : exits the console
