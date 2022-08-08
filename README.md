@@ -31,7 +31,7 @@ Launch the interpreter by piping the command to it with :
 |---------------|-----------------------|---------------------------------------|
 |help		|`help` / `help <cmd>`	|displays all cmd or help for given cmd	|
 |create		|`create <classname>`	|creates a newobject of given class	|
-|update		|`update <classname> <id> <attribute> <value> |updates objects	|
+|update		|`update <classname> <id> <attribute> <value>` |updates objects	|
 |show		|`show <classname> <id>`|prints the object's str representation	|
 |destroy	|`destroy <classname> <id>`|destroys the specified object	|
 |all		|`all <classname>`	|prints all object's str representation	|
@@ -43,4 +43,4 @@ Launch the interpreter by piping the command to it with :
 - OS : Ubuntu 20.04 LTS
 - Style guidelines : pycodestyle 2.8
 ####	**Author**
-Perez O 
+***Perez OF***
