@@ -6,6 +6,11 @@ import cmd
 
 from models.base_model import BaseModel
 from models.user import User
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
 from models import storage
 
 class HBNBCommand(cmd.Cmd):
@@ -25,6 +30,7 @@ class HBNBCommand(cmd.Cmd):
         do_quit()
         do_EOF()
         emptyline()
+        precmd()
 
         do_create()
         do_show()
@@ -35,7 +41,9 @@ class HBNBCommand(cmd.Cmd):
     """
 
     prompt = "(hbnb) "
-    __class_list = {'BaseModel': BaseModel, 'User': User}
+    __class_list = {'BaseModel': BaseModel, 'User': User, 'State': State,
+                    'City': City, 'Amenity': Amenity, 'Place': Place,
+                    'Review': Review}
 
 #    time_pat = re.compile(
 #                r'^\d{4}(\-\d{2}){2}T(\d{2}:){2}\d{2}(\.\d{6})?$')
@@ -53,6 +61,7 @@ class HBNBCommand(cmd.Cmd):
         """Command create : Creates a new object given its class
         and prints its id
         Usage : $ create <class name>
+                $ create User
         Args:
             line (str) : console line holding the class name of the object
         """
@@ -69,7 +78,8 @@ class HBNBCommand(cmd.Cmd):
 
     def do_show(self, line):
         """Command show : prints the string representation of an object
-        Usage : $ show BaseModel 1234-1234-1234
+        Usage : $ show <class name> <id>
+                $ show BaseModel 1234-1234-1234
         Args:
             line (str) : console line holding the object's class name and id
         """
@@ -94,7 +104,8 @@ class HBNBCommand(cmd.Cmd):
 
     def do_destroy(self, line):
         """Command destroy : deletes an object given its class name and id
-        Usage : $ destroy BaseModel 1234-1234-1234
+        Usage : $ destroy <class name> <id>
+                $ destroy BaseModel 1234-1234-1234
         Args:
             line (str) : console line holding the object's class name and id
         """
@@ -111,7 +122,7 @@ class HBNBCommand(cmd.Cmd):
                 # checks if the object exists currently and deletes it
                 for (key2, obj) in storage.all().items():
                     if (obj_key == key2):
-                        del(storage.all()[key])
+                        del(storage.all()[key2])
                         storage.save()
                         return
                 print(self.err_msg4)
@@ -120,8 +131,8 @@ class HBNBCommand(cmd.Cmd):
 
     def do_all(self, line):
         """Command all : prints all objects string representaion
-        Usage : $ all BaseModel
-                $ all
+        Usage : $ all [<class name>]
+                $ all BaseModel or  $ all
         Args:
             line (str) : console line holding the class name of the objects
         """
@@ -167,13 +178,13 @@ class HBNBCommand(cmd.Cmd):
                         if (args[2] not in
                             ['id', 'created_at', 'updated_at', '__class__']):
                             # find type of attribute and remove its limiter
-                            try:
+                            """try:
                                 i = 1
                                 while (args[3][-1] not in ["'", '"']):
                                     args[3] = args[3] + " " + args[3 + i]
                                     i += 1
                             except IndexError:
-                                print("value must be quoted")
+                                print("value must be quoted")"""
                             cast = type(eval(args[3]))
                             new_arg = args[3].strip("'")
                             new_arg = new_arg.strip('"')
@@ -184,20 +195,62 @@ class HBNBCommand(cmd.Cmd):
                 return
         print(self.err_msg2)
 
+    def do_count(self, line):
+        """Command count : counts number of object of a given class
+        Usage : $ <class name>.count()
+                $ User.count()
+        Args:
+            line (str) : console line holding the class name
+        """
+        if (line == ""):
+            print(self.err_msg1)
+            return
+        for key in self.__class_list.keys():
+            if (key == line):
+                i = 0
+                for obj in storage.all().values():
+                    if (obj.__class__.__name__ == line):
+                        i += 1
+                print(i)
+                return
+        print(self.err_msg2)
+
     def do_quit(self, line):
         """Command quit : exits the console
         """
         return (True)
 
     def do_EOF(self, line):
-        """Command EOF : exits the console
+        """Command EOF : exits the console when "CTRL-D"
         """
+        print()
         return (True)
 
     def emptyline(self):
         """does nothing when an empty line is entered
         """
         return
+
+    def precmd(self, line):
+        """modify the line before command execution
+        """
+        if ("." in line and line.split(".")[1][:5] == "show("):
+            args = line.split(".")
+            line = args[1][:4] + " " + args[0] + " " + args[1][6:-2]
+        elif ("." in line and line.split(".")[1][:8] == "destroy("):
+            args = line.split(".")
+            line = args[1][:7] + " " + args[0] + " " + args[1][9:-2]
+        elif ("." in line and line.split(".")[1][:7] == "update("):
+            args = line.split(".")
+            line = args[1][:6] + " " + args[0] + " "
+            args = args[1][7:-2].split(",")
+            line = line + args[0][1:-1] + " " + args[1][1:-1] + " "
+
+        elif ("." in line and line[-2:] == "()"):
+            args = line.split(".")
+            line = args[1][:-2] + " " + args[0]
+        print(line)
+        return (line)
 
 
 if __name__ == '__main__':
