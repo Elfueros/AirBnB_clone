@@ -13,15 +13,15 @@ It has been created with the cmd module of python.
 It allows some basic operation on the objects and files of the application
 
 ###	**How to start it**
-1. Installation
+####1. Installation
 Clone this repository with : `git clone https://github.com/ofperez-TheOwl/AirBnB_clone.git`
 
-2. Interactive mode
+####2. Interactive mode
 Launch the interpreter by moving to the repository and launch it with :
 `cd AirBnB_clone`
 `./console.py`
 
-3. Non interactive mode
+####3. Non interactive mode
 Launch the interpreter by piping the command to it with :
 `echo "<command>" | ./console.py`
 
