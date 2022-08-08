@@ -178,7 +178,7 @@ class HBNBCommand(cmd.Cmd):
                         if (args[2] not in
                             ['id', 'created_at', 'updated_at', '__class__']):
                             # find type of attribute and remove its limiter
-                            if (args[3][0] in ["'", '"']:
+                            if (args[3][0] in ["'", '"']):
                                     args[3] = parse_str(args)
                             cast = type(eval(args[3]))
                             new_arg = args[3].strip("'")
