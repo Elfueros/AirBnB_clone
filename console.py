@@ -178,13 +178,8 @@ class HBNBCommand(cmd.Cmd):
                         if (args[2] not in
                             ['id', 'created_at', 'updated_at', '__class__']):
                             # find type of attribute and remove its limiter
-                            """try:
-                                i = 1
-                                while (args[3][-1] not in ["'", '"']):
-                                    args[3] = args[3] + " " + args[3 + i]
-                                    i += 1
-                            except IndexError:
-                                print("value must be quoted")"""
+                            if (args[3][0] in ["'", '"']:
+                                    args[3] = parse_str(args)
                             cast = type(eval(args[3]))
                             new_arg = args[3].strip("'")
                             new_arg = new_arg.strip('"')
@@ -244,14 +239,31 @@ class HBNBCommand(cmd.Cmd):
             args = line.split(".")
             line = args[1][:6] + " " + args[0] + " "
             args = args[1][7:-2].split(",")
-            line = line + args[0][1:-1] + " " + args[1][1:-1] + " "
-
+            if (args[1][1] != "{"):
+                line = (line + args[0][1:-1] + " "
+                        + args[1][2:-1] + " " + args[2][1:])
+            else:
+                line = line + args[0][1:-1] + " " + args[1]
         elif ("." in line and line[-2:] == "()"):
             args = line.split(".")
             line = args[1][:-2] + " " + args[0]
         print(line)
         return (line)
 
+
+def parse_str(args):
+    """Transforms string attribute with space into one string
+    Args:
+        args (list) : list of str from the split of the console line
+    """
+    try:
+        i = 1
+        while (args[3][-1] not in ["'", '"']):
+            args[3] = args[3] + " " + args[3 + i]
+            i += 1
+        return (args[3])
+    except IndexError:
+        print("string value must be quoted")
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
