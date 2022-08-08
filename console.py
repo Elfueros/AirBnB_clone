@@ -239,11 +239,8 @@ class HBNBCommand(cmd.Cmd):
             args = line.split(".")
             line = args[1][:6] + " " + args[0] + " "
             args = args[1][7:-2].split(",")
-            if (args[1][1] != "{"):
-                line = (line + args[0][1:-1] + " "
+            line = (line + args[0][1:-1] + " "
                         + args[1][2:-1] + " " + args[2][1:])
-            else:
-                line = line + args[0][1:-1] + " " + args[1]
         elif ("." in line and line[-2:] == "()"):
             args = line.split(".")
             line = args[1][:-2] + " " + args[0]
