@@ -30,25 +30,17 @@ Launch the interpreter by piping the command to it with :
 |**Commands**	|	**Usage**	|	**Function**			|
 |---------------|-----------------------|---------------------------------------|
 |help		|`help` / `help <cmd>`	|displays all cmd or help for given cmd	|
-|---------------|-----------------------|---------------------------------------|
 |create		|`create <classname>`	|creates a newobject of given class	|
-|---------------|-----------------------|---------------------------------------|
 |update		|`update <classname> <id> <attribute> <value> |updates objects	|
-|---------------|-----------------------|---------------------------------------|
 |show		|`show <classname> <id>`|prints the object's str representation	|
-|---------------|-----------------------|---------------------------------------|
 |destroy	|`destroy <classname> <id>`|destroys the specified object	|
-|---------------|-----------------------|---------------------------------------|
 |all		|`all <classname>`	|prints all object's str representation	|
-|---------------|-----------------------|---------------------------------------|
 |count		|`<classname>.count()`	|returns number of object of given class|
-|---------------|-----------------------|---------------------------------------|
 |quit		|`quit`			|exits					|
-|---------------|-----------------------|---------------------------------------|
 
 ####	**Environment**
-	- Language : Python3.8
-	- OS : Ubuntu 20.04 LTS
-	- Style guidelines : pycodestyle 2.8
+- Language : Python3.8
+- OS : Ubuntu 20.04 LTS
+- Style guidelines : pycodestyle 2.8
 ####	**Author**
-	Perez O
+Perez O 
