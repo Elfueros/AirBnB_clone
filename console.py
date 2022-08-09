@@ -144,7 +144,7 @@ class HBNBCommand(cmd.Cmd):
             for (key, value) in arg_dict.items():
                 obj.__setattr__(key, value)
                 storage.save()
-                return
+            return
         if (len(args) == 3):  # checks if a value is given
             print(self.err_msg6)
             return
