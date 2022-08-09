@@ -229,24 +229,36 @@ class HBNBCommand(cmd.Cmd):
     def precmd(self, line):
         """modify the line before command execution
         """
-        if ("." in line and line.split(".")[1][:5] == "show("):
-            args = line.split(".")
-            line = args[1][:4] + " " + args[0] + " " + args[1][6:-2]
-        elif ("." in line and line.split(".")[1][:8] == "destroy("):
-            args = line.split(".")
-            line = args[1][:7] + " " + args[0] + " " + args[1][9:-2]
-        elif ("." in line and line.split(".")[1][:7] == "update("):
-            args = line.split(".")
-            line = args[1][:6] + " " + args[0] + " "
-            args = args[1][7:-2].split(",")
-            line = (line + args[0][1:-1] + " "
-                        + args[1][2:-1] + " " + args[2][1:])
-        elif ("." in line and line[-2:] == "()"):
-            args = line.split(".")
+        if ("." not in line):
+            return (line)
+        args = line.split(".")
+        if (args[1][:5] == "show("):
+            line = "show " + args[0] + " " + args[1][6:-2]
+        elif (args[1][:8] == "destroy("):
+            line = "destroy " + args[0] + " " + args[1][9:-2]
+        elif (args[1][:7] == "update("):
+            arg_class = args[0] + " "
+            args = line.split("(")
+            args = args[1][:-1].split(",")
+            arg_id = elag_str(args[0]) + " "
+            arg_attr = elag_str(args[1]) + " "
+            arg_val = args[2]
+            line = "update " + arg_class + arg_id + arg_attr + arg_val
+        elif (line[-2:] == "()"):
             line = args[1][:-2] + " " + args[0]
         print(line)
         return (line)
 
+
+def elag_str(arg):
+    """Transforms string with quote into string without quote
+    Args:
+        arg (str) : string to elage
+    """
+    arg = arg.strip(" ")
+    arg = arg.strip('"')
+    arg = arg.strip("'")
+    return (arg)
 
 def parse_str(args):
     """Transforms string attribute with space into one string
