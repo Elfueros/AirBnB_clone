@@ -61,10 +61,9 @@ class HBNBCommand(cmd.Cmd):
     def do_create(self, line):
         """Command create : Creates a new object given its class
         and prints its id
-        Usage : $ create <class name>
-                $ create User
-        Args:
-            line (str) : console line holding the class name of the object
+        Usage : $ create <class name> or $ <class name>.create()
+                
+                $ create User or $ Amenity.create()
         """
         if (line == ""):
             print(self.err_msg1)
@@ -79,10 +78,10 @@ class HBNBCommand(cmd.Cmd):
 
     def do_show(self, line):
         """Command show : prints the string representation of an object
-        Usage : $ show <class name> <id>
+        Usage : $ show <class name> <id> or $ <class name>.show("<id>")
+                
                 $ show BaseModel 1234-1234-1234
-        Args:
-            line (str) : console line holding the object's class name and id
+                $ City.show("1234-4332-2452")
         """
         key_obj = self.console_error_checker(line)
         if (key_obj is None):
@@ -91,10 +90,10 @@ class HBNBCommand(cmd.Cmd):
 
     def do_destroy(self, line):
         """Command destroy : deletes an object given its class name and id
-        Usage : $ destroy <class name> <id>
+        Usage : $ destroy <class name> <id> or $ <class name>.destroy("<id>")
+                
                 $ destroy BaseModel 1234-1234-1234
-        Args:
-            line (str) : console line holding the object's class name and id
+                $ Amenity.destroy("1234-4332-2452")
         """
         key_obj = self.console_error_checker(line)
         if (key_obj is None):
@@ -104,10 +103,9 @@ class HBNBCommand(cmd.Cmd):
 
     def do_all(self, line):
         """Command all : prints all objects string representaion
-        Usage : $ all [<class name>]
-                $ all BaseModel or  $ all
-        Args:
-            line (str) : console line holding the class name of the objects
+        Usage : $ all [<class name>] or $ <class name>.all()
+                
+                $ all BaseModel or  $ all or $ Place.all()
         """
         if (line == ""):
             for key in storage.all().keys():
@@ -123,10 +121,13 @@ class HBNBCommand(cmd.Cmd):
     def do_update(self, line):
         """Command update : updates an object given its class name,id,
         attribute and new value
-        Usage : $ update <class name> <id> <attribute name> "<value>"
-                $ update BaseModel 1234-1234-1234 email "name@example.com"
-        Args:
-            line (str) : console line holding the object's class name and id
+        Usage : $ update <class name> <id> <attribute name> <value> or
+                $ <class name>.update("<id>", "<attribute name>", <value>) or
+                $ <class name>.update("<id>", <dict of attribute/value pair>)
+                
+                $ update BaseModel 1234-1234 email "name@ex.com"
+                $ BaseModel.update("1234-1234", "age", 45)
+                $ Review.update("1234-1234", {'name': "Perez", 'age': 26})
         """
         args = line.split()
         key_obj = self.console_error_checker(line)
@@ -159,8 +160,9 @@ class HBNBCommand(cmd.Cmd):
 
     def do_count(self, line):
         """Command count : counts number of object of a given class
-        Usage : $ <class name>.count()
-                $ User.count()
+        Usage : $ <class name>.count() or count <class name>
+                
+                $ User.count() or $ count BaseModel
         Args:
             line (str) : console line holding the class name
         """
@@ -237,8 +239,16 @@ class HBNBCommand(cmd.Cmd):
             else:
                 args = args[1][:-1].split(",")
                 arg_id = elag_str(args[0]) + " "
-                arg_attr = elag_str(args[1]) + " "
-                arg_val = args[2]
+                try:
+                    arg_attr = elag_str(args[1]) + " "
+                except IndexError:
+                    line = "update " + arg_class + arg_id
+                    return (line)
+                try:
+                    arg_val = args[2]
+                except IndexError:
+                    line = "update " + arg_class + arg_id + arg_attr
+                    return (line)
                 line = "update " + arg_class + arg_id + arg_attr + arg_val
         elif (line[-2:] == "()"):
             line = args[1][:-2] + " " + args[0]
