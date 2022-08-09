@@ -83,24 +83,10 @@ class HBNBCommand(cmd.Cmd):
         Args:
             line (str) : console line holding the object's class name and id
         """
-        args = line.split()
-        if (len(args) == 0):                  # checks if a class is given
-            print(self.err_msg1)
+        key_obj = self.console_error_checker(line)
+        if (key_obj is None):
             return
-        for key1 in self.__class_list.keys():  # checks if class exist
-            if (args[0] == key1):
-                if (len(args) == 1):          # checks if an id is given
-                    print(self.err_msg3)
-                    return
-                obj_key = args[0] + "." + args[1]
-                # checks if the object exists currently and prints it
-                for (key2, obj) in storage.all().items():
-                    if (obj_key == key2):
-                        print(obj)
-                        return
-                print(self.err_msg4)
-                return
-        print(self.err_msg2)
+        print(key_obj[1])
 
     def do_destroy(self, line):
         """Command destroy : deletes an object given its class name and id
@@ -109,25 +95,11 @@ class HBNBCommand(cmd.Cmd):
         Args:
             line (str) : console line holding the object's class name and id
         """
-        args = line.split()
-        if (len(args) == 0):                  # checks if a class is given
-            print(self.err_msg1)
+        key_obj = self.console_error_checker(line)
+        if (key_obj is None):
             return
-        for key1 in self.__class_list.keys():  # checks if class exist
-            if (args[0] == key1):
-                if (len(args) == 1):          # checks if an id is given
-                    print(self.err_msg3)
-                    return
-                obj_key = args[0] + "." + args[1]
-                # checks if the object exists currently and deletes it
-                for (key2, obj) in storage.all().items():
-                    if (obj_key == key2):
-                        del(storage.all()[key2])
-                        storage.save()
-                        return
-                print(self.err_msg4)
-                return
-        print(self.err_msg2)
+        del(storage.all()[key_obj[0]])
+        storage.save()
 
     def do_all(self, line):
         """Command all : prints all objects string representaion
@@ -156,39 +128,33 @@ class HBNBCommand(cmd.Cmd):
             line (str) : console line holding the object's class name and id
         """
         args = line.split()
-        if (len(args) == 0):                  # checks if a class is given
-            print(self.err_msg1)
+        key_obj = self.console_error_checker(line)
+        if (key_obj is None):
             return
-        for key1 in self.__class_list.keys():  # checks if class exist
-            if (args[0] == key1):
-                if (len(args) == 1):          # checks if an id is given
-                    print(self.err_msg3)
-                    return
-                obj_key = args[0] + "." + args[1]
-                # checks if the object exists currently
-                for (key2, obj) in storage.all().items():
-                    if (obj_key == key2):
-                        if (len(args) == 2):  # cheks if an attribute is given
-                            print(self.err_msg5)
-                            return
-                        if (len(args) == 3):  # cheks if a value is given
-                            print(self.err_msg6)
-                            return
-                        # adds the new attribute to the object
-                        if (args[2] not in
-                            ['id', 'created_at', 'updated_at', '__class__']):
-                            # find type of attribute and remove its limiter
-                            if (args[3][0] in ["'", '"']):
-                                    args[3] = parse_str(args)
-                            cast = type(eval(args[3]))
-                            new_arg = args[3].strip("'")
-                            new_arg = new_arg.strip('"')
-                            obj.__setattr__(args[2], cast(new_arg))
-                            storage.save()
-                            return
-                print(self.err_msg4)
+        obj = key_obj[1]
+        if (len(args) == 2):  # checks if an attribute is given
+            print(self.err_msg5)
+            return
+        if ("{" in line):  # attribute and value are in a dict
+            args = line.split("{")
+            arg_dict = "{" + args[1]
+            arg_dict = eval(arg_dict)
+            for (key, value) in arg_dict.items():
+                obj.__setattr__(key, value)
+                storage.save()
                 return
-        print(self.err_msg2)
+        if (len(args) == 3):  # checks if a value is given
+            print(self.err_msg6)
+            return
+        # adds the new attribute to the object
+        if (args[2] not in ['id', 'created_at', 'updated_at', '__class__']):
+            # find type of attribute and remove its limiter
+            if (args[3][0] in ["'", '"']):
+                args[3] = parse_str(args)
+            cast = type(eval(args[3]))
+            new_arg = elag_str(args[3])
+            obj.__setattr__(args[2], cast(new_arg))
+            storage.save()
 
     def do_count(self, line):
         """Command count : counts number of object of a given class
@@ -226,6 +192,29 @@ class HBNBCommand(cmd.Cmd):
         """
         return
 
+    def console_error_checker(self, line):
+        """checks line for error input error
+        Args:
+            line (str) : console line
+        """
+        args = line.split()
+        if (len(args) == 0):                  # checks if a class is given
+            print(self.err_msg1)
+            return
+        for key1 in self.__class_list.keys():  # checks if class exist
+            if (args[0] == key1):
+                if (len(args) == 1):          # checks if an id is given
+                    print(self.err_msg3)
+                    return
+                obj_key = args[0] + "." + args[1]
+                # checks if the object exists currently
+                for (key2, obj) in storage.all().items():
+                    if (obj_key == key2):
+                        return (key2, obj)
+                print(self.err_msg4)
+                return
+        print(self.err_msg2)
+
     def precmd(self, line):
         """modify the line before command execution
         """
@@ -239,11 +228,17 @@ class HBNBCommand(cmd.Cmd):
         elif (args[1][:7] == "update("):
             arg_class = args[0] + " "
             args = line.split("(")
-            args = args[1][:-1].split(",")
-            arg_id = elag_str(args[0]) + " "
-            arg_attr = elag_str(args[1]) + " "
-            arg_val = args[2]
-            line = "update " + arg_class + arg_id + arg_attr + arg_val
+            if ("{" in args[1]):
+                args = args[1][:-1].split("{")
+                arg_id = elag_str(args[0]) + " "
+                arg_dict = "{" + args[1]
+                line = "update " + arg_class + arg_id + arg_dict
+            else:
+                args = args[1][:-1].split(",")
+                arg_id = elag_str(args[0]) + " "
+                arg_attr = elag_str(args[1]) + " "
+                arg_val = args[2]
+                line = "update " + arg_class + arg_id + arg_attr + arg_val
         elif (line[-2:] == "()"):
             line = args[1][:-2] + " " + args[0]
         print(line)
@@ -255,7 +250,9 @@ def elag_str(arg):
     Args:
         arg (str) : string to elage
     """
-    arg = arg.strip(" ")
+    for i in range(0, 2):
+        arg = arg.strip(" ")
+        arg = arg.strip(",")
     arg = arg.strip('"')
     arg = arg.strip("'")
     return (arg)
