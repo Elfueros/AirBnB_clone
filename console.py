@@ -13,6 +13,7 @@ from models.place import Place
 from models.review import Review
 from models import storage
 
+
 class HBNBCommand(cmd.Cmd):
     """Definition of the custom shell command interpreter
     Attributes:
@@ -257,6 +258,7 @@ def elag_str(arg):
     arg = arg.strip("'")
     return (arg)
 
+
 def parse_str(args):
     """Transforms string attribute with space into one string
     Args:
@@ -270,6 +272,7 @@ def parse_str(args):
         return (args[3])
     except IndexError:
         print("string value must be quoted")
+
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
