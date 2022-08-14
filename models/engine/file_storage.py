@@ -48,11 +48,8 @@ class FileStorage():
         """sets in __object the object obj with the key
         <class name>.id
         """
-        try:
-            key = obj.__class__.__name__ + "." + obj.id
-            self.__objects[key] = obj
-        except (AttributeError):
-            raise TypeError("Only BaseModel instances can be storage.new()")
+        key = obj.__class__.__name__ + "." + obj.id
+        self.__objects[key] = obj
 
     def save(self):
         """serializes __objects to the json file
@@ -74,4 +71,9 @@ class FileStorage():
                 obj = obj_class(**value)
                 self.__objects[key] = obj
         except FileNotFoundError:
+            pass
+        except json.decoder.JSONDecodeError:
+            print("JSON failed to decode the JSON file provided.")
+            print("It's either empty or corrupted.")
+            print("The stored data will be definitely lost at next save.")
             pass
