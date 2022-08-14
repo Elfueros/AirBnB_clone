@@ -76,7 +76,7 @@ class FileStorage():
         except FileNotFoundError:
             pass
         except json.decoder.JSONDecodeError:
-        #    print("JSON failed to decode the JSON file provided.")
-        #    print("It's either empty or corrupted.")
-        #    print("The stored data will be definitely lost at next save.")
+            #   print("JSON failed to decode the JSON file provided.")
+            #   print("It's either empty or corrupted.")
+            #   print("The stored data will be definitely lost at next save.")
             pass
