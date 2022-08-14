@@ -36,7 +36,7 @@ class TestConsole(unittest.TestCase):
         """
         try:
             os.remove("file.json")
-        except:
+        except IOError:
             pass
 
     def test_docstrings_in_console(self):
@@ -121,6 +121,7 @@ class TestConsole(unittest.TestCase):
             self.typing.onecmd("update User 12345")
             self.assertEqual("** no instance found **\n",
                              f.getvalue())
+
     def test_show(self):
         """Tests output for cmd "show"
         """
@@ -140,6 +141,7 @@ class TestConsole(unittest.TestCase):
             self.typing.onecmd("User.show('123')")
             self.assertEqual("** no instance found **\n",
                              f.getvalue())
+
     def test_class_cmd(self):
         """Tests output for syntax <class>.<cmd>
         """
