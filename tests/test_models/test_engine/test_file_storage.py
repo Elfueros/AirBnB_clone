@@ -72,11 +72,11 @@ class TestFileStorage(unittest.TestCase):
     def test_2_new(self):
         """tests storage.new arguments
         """
-        with self.assertRaises(AttributeError):
+        with self.assertRaises(TypeError):
             storage.new(None)
-        with self.assertRaises(AttributeError):
+        with self.assertRaises(TypeError):
             storage.new(23.45)
-        with self.assertRaises(AttributeError):
+        with self.assertRaises(TypeError):
             storage.new("23.45")
 
     def test_3_new_save(self):
