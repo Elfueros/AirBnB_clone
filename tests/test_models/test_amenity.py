@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-""" user test unit
+""" amenity test unit
 """
 import unittest
 import re
@@ -7,12 +7,12 @@ from datetime import datetime
 import json
 import os
 
-from models.user import User
+from models.amenity import Amenity
 from models import storage
 
 
-class TestUser(unittest.TestCase):
-    """Defines a test unit for the User
+class TestAmenity(unittest.TestCase):
+    """Defines a test unit for the Amenity
     Functions:
         test_0_class_attr(self)
         test_1_init_new(self)
@@ -39,19 +39,16 @@ class TestUser(unittest.TestCase):
         cls.uuid_pat = re.compile(
                 r'^[\da-f]{8}(\-[\da-f]{4}){3}\-[\da-f]{12}$')
         cls.obj_id_pat = re.compile(
-                r'User\.[\da-f]{8}(\-[\da-f]{4}){3}\-[\da-f]{12}')
-        cls.obj = User()
-        cls.obj1 = User()
-        cls.obj1.email = "lenal@lcorp.com"
-        cls.obj1.password = "supergirl"
-        cls.obj1.first_name = "Lena"
-        cls.obj1.last_name = "Luthor"
+                r'Amenity\.[\da-f]{8}(\-[\da-f]{4}){3}\-[\da-f]{12}')
+        cls.obj = Amenity()
+        cls.obj1 = Amenity()
+        cls.obj1.name = "Lena"
         cls.obj1.type = "appartment"
         cls.obj1.city = "Cotonou"
         cls.obj1.room = 3
         cls.obj1.area = 70
         cls.obj1.save()
-        cls.obj2 = User(**cls.obj1.to_dict())
+        cls.obj2 = Amenity(**cls.obj1.to_dict())
         with open("file.json", "r", encoding="utf-8") as f:
             cls.load_end = f.read()
 
@@ -71,11 +68,8 @@ class TestUser(unittest.TestCase):
         self.assertIsNotNone(self.uuid_pat.fullmatch(self.obj.id))
         self.assertEqual(datetime, type(self.obj.created_at))
         self.assertIs(self.obj.created_at, self.obj.updated_at)
-        # class attributes is reachable
-        self.assertEqual("", self.obj.email)
-        self.assertEqual("", self.obj.password)
-        self.assertEqual("", self.obj.first_name)
-        self.assertEqual("", self.obj.last_name)
+        # class attributes are reachable
+        self.assertEqual("", self.obj.name)
 
     def test_2_init_kwargs(self):
         """tests the values initiated from a dict
@@ -95,11 +89,8 @@ class TestUser(unittest.TestCase):
         self.assertEqual(self.obj1.room, self.obj2.room)
         self.assertEqual(self.obj1.type, self.obj2.type)
         self.assertEqual(self.obj1.area, self.obj2.area)
-        # class attributes is not altered
-        self.assertEqual("", self.obj2.__class__.email)
-        self.assertEqual("", self.obj2.__class__.password)
-        self.assertEqual("", self.obj2.__class__.first_name)
-        self.assertEqual("", self.obj2.__class__.last_name)
+        # class attributes are not altered
+        self.assertEqual("", self.obj2.__class__.name)
 
     def test_3_str(self):
         """tests obj.__str__ for correct output
@@ -119,7 +110,7 @@ class TestUser(unittest.TestCase):
     def test_5_to_dict(self):
         """tests obj.to_dict for correct output
         """
-        self.assertEqual(12, len(self.obj1.to_dict()))
+        self.assertEqual(9, len(self.obj1.to_dict()))
         self.assertEqual(3, self.obj1.to_dict()['room'])
         self.assertEqual(70, self.obj1.to_dict()['area'])
         self.assertEqual("Cotonou", self.obj1.to_dict()['city'])
@@ -129,7 +120,7 @@ class TestUser(unittest.TestCase):
         self.assertIsNotNone(self.time_pat.fullmatch(
             self.obj1.to_dict()['updated_at']))
 
-        self.assertEqual(12, len(self.obj2.to_dict()))
+        self.assertEqual(9, len(self.obj2.to_dict()))
         self.assertEqual(3, self.obj2.to_dict()['room'])
         self.assertEqual(70, self.obj2.to_dict()['area'])
         self.assertEqual("Cotonou", self.obj2.to_dict()['city'])
@@ -153,10 +144,7 @@ class TestUser(unittest.TestCase):
     def test_0_class_attr(self):
         """checks the value of class attributes
         """
-        self.assertEqual("", User.email)
-        self.assertEqual("", User.password)
-        self.assertEqual("", User.first_name)
-        self.assertEqual("", User.last_name)
+        self.assertEqual("", Amenity.name)
 
 
 if (__name__ == 'main'):
