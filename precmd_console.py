@@ -218,18 +218,16 @@ class HBNBCommand(cmd.Cmd):
                 return
         print(self.err_msg2)
 
-    def default(self, line):
+    def precmd(self, line):
         """modify the line before command execution
         """
-        print(line)
+        if ("." not in line):
+            return (line)
         args = line.split(".")
-        if (len(args) == 1):
-            self.stdout.write('*** Unknown syntax: %s\n'%line)
-            return
         if (args[1][:5] == "show("):
-            self.do_show(args[0] + " " + args[1][6:-2])
+            line = "show " + args[0] + " " + args[1][6:-2]
         elif (args[1][:8] == "destroy("):
-            self.do_destroy(args[0] + " " + args[1][9:-2])
+            line = "destroy " + args[0] + " " + args[1][9:-2]
         elif (args[1][:7] == "update("):
             arg_class = args[0] + " "
             args = line.split("(")
@@ -237,23 +235,25 @@ class HBNBCommand(cmd.Cmd):
                 args = args[1][:-1].split("{")
                 arg_id = elag_str(args[0]) + " "
                 arg_dict = "{" + args[1]
-                self.do_update(arg_class + arg_id + arg_dict)
+                line = "update " + arg_class + arg_id + arg_dict
             else:
                 args = args[1][:-1].split(",")
                 arg_id = elag_str(args[0]) + " "
                 try:
                     arg_attr = elag_str(args[1]) + " "
                 except IndexError:
-                    self.do_update(arg_class + arg_id)
+                    line = "update " + arg_class + arg_id
+                    return (line)
                 try:
                     arg_val = args[2]
                 except IndexError:
-                    self.do_update(arg_class + arg_id + arg_attr)
-                self.do_update(arg_class + arg_id + arg_attr + arg_val)
-        elif (args[1][:6] == "count("):
-            self.do_count(args[0])
-        elif (args[1][:5] == "all("):
-            self.do_all(args[0])
+                    line = "update " + arg_class + arg_id + arg_attr
+                    return (line)
+                line = "update " + arg_class + arg_id + arg_attr + arg_val
+        elif (line[-2:] == "()"):
+            line = args[1][:-2] + " " + args[0]
+        print(line)
+        return (line)
 
 
 def elag_str(arg):
