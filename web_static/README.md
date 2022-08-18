@@ -5,13 +5,13 @@ This project will specifically introduce html and css focus on:
 * creating web page in html.
 * formatting web page in css.
 
-####	**Environment**
+##	**Environment**
 * Language : html, css
 * OS : Ubuntu 20.04 LTS
 * Style guidelines :
 * Preview: paste index.html link and run on: http://htmlpreview.github.io/?
 
-####	**Author**
+##	**Author**
 **Perez OF**
 
 ***Let's go for code!***
