@@ -31,23 +31,30 @@ class TestConsole(unittest.TestCase):
         test_5_update(self)
         test_6_update(self)
     """
-    err_msg1 = "** class name missing **"
-    err_msg2 = "** class doesn't exist **"
-    err_msg3 = "** instance id missing **"
-    err_msg4 = "** no instance found **"
+    err_msg1 = "** class name missing **\n"
+    err_msg2 = "** class doesn't exist **\n"
+    err_msg3 = "** instance id missing **\n"
+    err_msg4 = "** no instance found **\n"
 
     @classmethod
-    def setUpClass(self):
+    def setUpClass(cls):
         """Set up test
         """
-        self.typing = console.HBNBCommand()
+        cls.cons = console.HBNBCommand()
+        try:
+            os.rename("file.json", "backup")
+        except IOError:
+            pass
+        with open("file.json", "w+", encoding="utf-8") as f:
+            cls.json_f = f.read()
 
     @classmethod
-    def tearDownClass(self):
+    def tearDownClass(cls):
         """Removes temporary file (file.json) created
         """
+        os.remove("file.json")
         try:
-            os.remove("file.json")
+            os.rename("backup", "file.json")
         except IOError:
             pass
 
@@ -60,102 +67,95 @@ class TestConsole(unittest.TestCase):
         """Tests output for cmd "create"
         """
         with patch('sys.stdout', new=StringIO()) as f:
-            self.typing.onecmd("create")
-            self.assertEqual(self.err_msg1 + "\n", f.getvalue())
+            self.cons.onecmd("create")
+            self.assertEqual(self.err_msg1, f.getvalue())
         with patch('sys.stdout', new=StringIO()) as f:
-            self.typing.onecmd("create SomeClass")
-            self.assertEqual(self.err_msg2 + "\n", f.getvalue())
+            self.cons.onecmd("create SomeClass")
+            self.assertEqual(self.err_msg2, f.getvalue())
         with patch('sys.stdout', new=StringIO()) as f:
             # creates instances for upcoming test
-            self.typing.onecmd("create User")
-            self.typing.onecmd("create User")
+            self.cons.onecmd("create User")
+            self.cons.onecmd("create User")
         with patch('sys.stdout', new=StringIO()) as f:
-            self.typing.onecmd("User.all()")
-            self.assertEqual("[[User]", f.getvalue()[:7])
+            self.cons.onecmd(self.cons.precmd("User.all()"))
+            self.assertEqual('["[User]', f.getvalue()[:8])
 
     def test_1_all(self):
         """Tests output for cmd "all"
         """
         with patch('sys.stdout', new=StringIO()) as f:
-            self.typing.onecmd("all NonExistantModel")
-            self.assertEqual(self.err_msg2 + "\n", f.getvalue())
+            self.cons.onecmd("all NonExistantModel")
+            self.assertEqual(self.err_msg2, f.getvalue())
         with patch('sys.stdout', new=StringIO()) as f:
-            self.typing.onecmd("all Place")
+            self.cons.onecmd("all Place")
             self.assertEqual("[]\n", f.getvalue())
 
     def test_4_destroy(self):
         """Tests output for cmd "destroy"
         """
         with patch('sys.stdout', new=StringIO()) as f:
-            self.typing.onecmd("destroy")
-            self.assertEqual(self.err_msg1 + "\n", f.getvalue())
+            self.cons.onecmd("destroy")
+            self.assertEqual(self.err_msg1, f.getvalue())
         with patch('sys.stdout', new=StringIO()) as f:
-            self.typing.onecmd("destroy TheWorld")
-            self.assertEqual(self.err_msg2 + "\n", f.getvalue())
+            self.cons.onecmd("destroy TheWorld")
+            self.assertEqual(self.err_msg2, f.getvalue())
         with patch('sys.stdout', new=StringIO()) as f:
-            self.typing.onecmd("destroy User")
-            self.assertEqual(self.err_msg3 + "\n", f.getvalue())
+            self.cons.onecmd("destroy User")
+            self.assertEqual(self.err_msg3, f.getvalue())
         with patch('sys.stdout', new=StringIO()) as f:
-            self.typing.onecmd("destroy BaseModel 12345")
-            self.assertEqual(self.err_msg4 + "\n", f.getvalue())
+            self.cons.onecmd("destroy BaseModel 12345")
+            self.assertEqual(self.err_msg4, f.getvalue())
         with patch('sys.stdout', new=StringIO()) as f:
-            self.typing.onecmd("City.destroy('123')")
-            self.assertEqual(self.err_msg4 + "\n", f.getvalue())
+            self.cons.onecmd(self.cons.precmd("City.destroy('123')"))
+            self.assertEqual(self.err_msg4, f.getvalue())
 
     def test_5_update(self):
         """Tests output for cmd "update"
         """
         with patch('sys.stdout', new=StringIO()) as f:
-            self.typing.onecmd("update")
-            self.assertEqual(self.err_msg1 + "\n", f.getvalue())
+            self.cons.onecmd("update")
+            self.assertEqual(self.err_msg1, f.getvalue())
         with patch('sys.stdout', new=StringIO()) as f:
-            self.typing.onecmd("update You")
-            self.assertEqual(self.err_msg2 + "\n", f.getvalue())
+            self.cons.onecmd("update You")
+            self.assertEqual(self.err_msg2, f.getvalue())
         with patch('sys.stdout', new=StringIO()) as f:
-            self.typing.onecmd("update User")
-            self.assertEqual(self.err_msg3 + "\n", f.getvalue())
+            self.cons.onecmd("update User")
+            self.assertEqual(self.err_msg3, f.getvalue())
         with patch('sys.stdout', new=StringIO()) as f:
-            self.typing.onecmd("update User 12345")
-            self.assertEqual(self.err_msg4 + "\n", f.getvalue())
+            self.cons.onecmd("update User 12345")
+            self.assertEqual(self.err_msg4, f.getvalue())
 
     def test_6_update(self):
         """Tests output for cmd ".update()"
         """
         with patch('sys.stdout', new=StringIO()) as f:
-            self.typing.onecmd(".update('1213431')")
-            self.assertEqual(self.err_msg1 + "\n", f.getvalue())
+            self.cons.onecmd(self.cons.precmd(".update('1213431')"))
+            self.assertEqual(self.err_msg1, f.getvalue())
         with patch('sys.stdout', new=StringIO()) as f:
-            self.typing.onecmd("You.update()")
-            self.assertEqual(self.err_msg2 + "\n", f.getvalue())
+            self.cons.onecmd(self.cons.precmd("You.update()"))
+            self.assertEqual(self.err_msg2, f.getvalue())
         with patch('sys.stdout', new=StringIO()) as f:
-            self.typing.onecmd("User.update()")
-            self.assertEqual(self.err_msg3 + "\n", f.getvalue())
+            self.cons.onecmd(self.cons.precmd("User.update()"))
+            self.assertEqual(self.err_msg3, f.getvalue())
         with patch('sys.stdout', new=StringIO()) as f:
-            self.typing.onecmd("User.update('12345')")
-            self.assertEqual(self.err_msg4 + "\n", f.getvalue())
+            self.cons.onecmd(self.cons.precmd("User.update('12345')"))
+            self.assertEqual(self.err_msg4, f.getvalue())
 
     def test_2_show(self):
         """Tests output for cmd "show"
         """
         with patch('sys.stdout', new=StringIO()) as f:
-            self.typing.onecmd("show")
-            self.assertEqual(self.err_msg1 + "\n", f.getvalue())
+            self.cons.onecmd("show")
+            self.assertEqual(self.err_msg1, f.getvalue())
         with patch('sys.stdout', new=StringIO()) as f:
-            self.typing.onecmd("Any.show()")
-            self.assertEqual(self.err_msg2 + "\n", f.getvalue())
+            self.cons.onecmd(self.cons.precmd("Any.show()"))
+            self.assertEqual(self.err_msg2, f.getvalue())
         with patch('sys.stdout', new=StringIO()) as f:
-            self.typing.onecmd("show Review")
-            self.assertEqual(self.err_msg3 + "\n", f.getvalue())
+            self.cons.onecmd("show Review")
+            self.assertEqual(self.err_msg3, f.getvalue())
         with patch('sys.stdout', new=StringIO()) as f:
-            self.typing.onecmd("User.show('123')")
-            self.assertEqual(self.err_msg4 + "\n", f.getvalue())
-
-    def test_class_cmd(self):
-        """Tests output for syntax <class>.<cmd>
-        """
-        with patch('sys.stdout', new=StringIO()) as f:
-            self.typing.onecmd("User.count()")
-            self.assertEqual(int, type(eval(f.getvalue())))
+            self.cons.onecmd(self.cons.precmd("User.show('123')"))
+            self.assertEqual(self.err_msg4, f.getvalue())
 
 
 if __name__ == "__main__":

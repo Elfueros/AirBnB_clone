@@ -107,26 +107,14 @@ class HBNBCommand(cmd.Cmd):
                 
                 $ all BaseModel or  $ all or $ Place.all()
         """
-        i = 0
         if (line == ""):
-            print('[', end="")
             for key in storage.all().keys():
-                print('"', storage.all()[key], '"', end="", sep="")
-                if (i != len(storage.all().keys()) - 1):
-                    print(', ', end="", sep="")
-                i += 1
-            print(']')
+                print(storage.all()[key])
             return
         if (line in self.__class_list.keys()):
-            obj_list = [obj for obj in storage.all().values()
-                        if (line == obj.__class__.__name__)]
-            print('[', end="")
-            for obj in obj_list:
-                print('"', obj, '"', end="", sep="")
-                if (i != len(obj_list) - 1):
-                    print(', ', end="", sep="")
-                i += 1
-            print(']')
+            for obj in storage.all().values():
+                if (line == obj.__class__.__name__):
+                    print(obj)
             return
         print(self.err_msg2)
 
@@ -213,10 +201,7 @@ class HBNBCommand(cmd.Cmd):
             line (str) : console line
         """
         args = line.split()
-        if (len(args) == 0):  # checks if a class is given
-            print(self.err_msg1)
-            return
-        if (args[0] == "no_class"):
+        if (len(args) == 0):                  # checks if a class is given
             print(self.err_msg1)
             return
         for key1 in self.__class_list.keys():  # checks if class exist
@@ -233,44 +218,43 @@ class HBNBCommand(cmd.Cmd):
                 return
         print(self.err_msg2)
 
-    def precmd(self, line):
+    def default(self, line):
         """modify the line before command execution
         """
-        if ("." not in line):
-            return (line)
+        print(line)
         args = line.split(".")
+        print(args)
+        if (len(args) == 1):
+            self.stdout.write('*** Unknown syntax: %s\n'%line)
+            return
         if (args[1][:5] == "show("):
-            line = "show " + args[0] + " " + args[1][6:-2]
+            self.do_show(args[0] + " " + args[1][6:-2])
         elif (args[1][:8] == "destroy("):
-            line = "destroy " + args[0] + " " + args[1][9:-2]
+            self.do_destroy(args[0] + " " + args[1][9:-2])
         elif (args[1][:7] == "update("):
-            if (line[0] == "."):
-                arg_class = "no_class "
-            else:
-                arg_class = args[0] + " "
+            arg_class = args[0] + " "
             args = line.split("(")
             if ("{" in args[1]):
                 args = args[1][:-1].split("{")
                 arg_id = elag_str(args[0]) + " "
                 arg_dict = "{" + args[1]
-                line = "update " + arg_class + arg_id + arg_dict
+                self.do_update(arg_class + arg_id + arg_dict)
             else:
                 args = args[1][:-1].split(",")
                 arg_id = elag_str(args[0]) + " "
                 try:
                     arg_attr = elag_str(args[1]) + " "
                 except IndexError:
-                    line = "update " + arg_class + arg_id
-                    return (line)
+                    self.do_update(arg_class + arg_id)
                 try:
                     arg_val = args[2]
                 except IndexError:
-                    line = "update " + arg_class + arg_id + arg_attr
-                    return (line)
-                line = "update " + arg_class + arg_id + arg_attr + arg_val
-        elif (line[-2:] == "()"):
-            line = args[1][:-2] + " " + args[0]
-        return (line)
+                    self.do_update(arg_class + arg_id + arg_attr)
+                self.do_update(arg_class + arg_id + arg_attr + arg_val)
+        elif (args[1][:6] == "count("):
+            self.do_count(args[0])
+        elif (args[1][:5] == "all("):
+            self.do_all(args[0])
 
 
 def elag_str(arg):
