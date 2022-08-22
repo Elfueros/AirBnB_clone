@@ -51,6 +51,8 @@ class TestAmenity(unittest.TestCase):
         cls.obj2 = Amenity(**cls.obj1.to_dict())
         with open("file.json", "r", encoding="utf-8") as f:
             cls.load_end = f.read()
+        cls.end_obj = [obj for obj in storage.all().values()
+                           if obj.__class__.__name__ == "Amenity"]
 
     @classmethod
     def tearDownClass(self):
@@ -138,7 +140,7 @@ class TestAmenity(unittest.TestCase):
     def test_7_file_stored(self):
         """tests content of file.json after modification
         """
-        self.assertEqual(len(storage.all()),
+        self.assertEqual(len(self.end_obj),
                          len(re.findall(self.obj_id_pat, self.load_end)))
 
     def test_0_class_attr(self):

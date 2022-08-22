@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-""" user test unit
+""" filestorage test unit
 """
 import unittest
 import re
@@ -10,13 +10,12 @@ from models import storage
 
 
 class TestFileStorage(unittest.TestCase):
-    """Defines a test unit for the User
+    """Defines a test unit for the FileStorage
     Functions:
         test_0_class_attr(self)
         test_1_reload(self)
         test_2_new(self)
         test_3_new_save(self)
-        test_4_save(self)
     """
 
     @classmethod
@@ -85,12 +84,6 @@ class TestFileStorage(unittest.TestCase):
         self.assertIn("User." + self.obj1.id, self.end_keys)
         self.assertIn("User." + self.obj2.id, self.end_keys)
         self.assertEqual(self.end_keys.count("User." + self.obj3.id), 1)
-
-    def test_4_save(self):
-        """tests obj.save and storage.save
-        """
-        self.assertEqual(len(storage.all()),
-                         len(re.findall(self.obj_id_pat, self.load_end)))
 
     def test_0_class_attr(self):
         """checks the value of class attributes

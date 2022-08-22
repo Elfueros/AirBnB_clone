@@ -53,6 +53,8 @@ class TestReview(unittest.TestCase):
         cls.obj2 = Review(**cls.obj1.to_dict())
         with open("file.json", "r", encoding="utf-8") as f:
             cls.load_end = f.read()
+        cls.end_obj = [obj for obj in storage.all().values()
+                           if obj.__class__.__name__ == "Review"]
 
     @classmethod
     def tearDownClass(self):
@@ -144,7 +146,7 @@ class TestReview(unittest.TestCase):
     def test_7_file_stored(self):
         """tests content of file.json after modification
         """
-        self.assertEqual(len(storage.all()),
+        self.assertEqual(len(self.end_obj),
                          len(re.findall(self.obj_id_pat, self.load_end)))
 
     def test_0_class_attr(self):
