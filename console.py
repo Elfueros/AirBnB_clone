@@ -62,7 +62,6 @@ class HBNBCommand(cmd.Cmd):
         """Command create : Creates a new object given its class
         and prints its id
         Usage : $ create <class name> or $ <class name>.create()
-                
                 $ create User or $ Amenity.create()
         """
         if (line == ""):
@@ -79,7 +78,6 @@ class HBNBCommand(cmd.Cmd):
     def do_show(self, line):
         """Command show : prints the string representation of an object
         Usage : $ show <class name> <id> or $ <class name>.show("<id>")
-                
                 $ show BaseModel 1234-1234-1234
                 $ City.show("1234-4332-2452")
         """
@@ -91,7 +89,6 @@ class HBNBCommand(cmd.Cmd):
     def do_destroy(self, line):
         """Command destroy : deletes an object given its class name and id
         Usage : $ destroy <class name> <id> or $ <class name>.destroy("<id>")
-                
                 $ destroy BaseModel 1234-1234-1234
                 $ Amenity.destroy("1234-4332-2452")
         """
@@ -104,7 +101,6 @@ class HBNBCommand(cmd.Cmd):
     def do_all(self, line):
         """Command all : prints all objects string representaion
         Usage : $ all [<class name>] or $ <class name>.all()
-                
                 $ all BaseModel or  $ all or $ Place.all()
         """
         i = 0
@@ -136,7 +132,6 @@ class HBNBCommand(cmd.Cmd):
         Usage : $ update <class name> <id> <attribute name> <value> or
                 $ <class name>.update("<id>", "<attribute name>", <value>) or
                 $ <class name>.update("<id>", <dict of attribute/value pair>)
-                
                 $ update BaseModel 1234-1234 email "name@ex.com"
                 $ BaseModel.update("1234-1234", "age", 45)
                 $ Review.update("1234-1234", {'name': "Perez", 'age': 26})
@@ -173,7 +168,6 @@ class HBNBCommand(cmd.Cmd):
     def do_count(self, line):
         """Command count : counts number of object of a given class
         Usage : $ <class name>.count() or count <class name>
-                
                 $ User.count() or $ count BaseModel
         Args:
             line (str) : console line holding the class name
