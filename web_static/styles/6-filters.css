@@ -51,14 +51,14 @@ section.filters button:hover {
 /* display location and amenities options upon hover */
 .popover {
 	display: none;
-	background-color: #FAFAFA;
+	color: #FAFAFA;
 	box-sizing: border-box;
 	width: 100%;
 	border: 1px solid #DDDDDD;
 	border-radius: 4px;
 	position: relative;
 	z-index: 1;
-	pading-right: 20% auto;
+	padding-right: 20% auto;
 }
 
 .popover h2 {
