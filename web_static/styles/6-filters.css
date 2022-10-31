@@ -51,7 +51,7 @@ section.filters button:hover {
 /* display location and amenities options upon hover */
 .popover {
 	display: none;
-	color: #FAFAFA;
+	background-color: #FAFAFA;
 	box-sizing: border-box;
 	width: 100%;
 	border: 1px solid #DDDDDD;
