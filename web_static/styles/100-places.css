@@ -52,7 +52,7 @@
 	text-align: right;
 }
 
-.information, .user, .description {
+.information {
 	height: 80px;
 	border-top: 1px solid #DDDDDD;
 	border-bottom: 1px solid #DDDDDD;
