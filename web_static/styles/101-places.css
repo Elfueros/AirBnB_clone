@@ -12,7 +12,6 @@
 	margin: 20px;
 	border: 1px solid #FF5A5F;
 	border-radius: 4px;
-	/*display: inline-block;*/
 	overflow: auto;
 }
 
@@ -54,12 +53,15 @@
 	text-align: right;
 }
 
-.information {
-	height: 80px;
+.information .user .description {
 	border-top: 1px solid #DDDDDD;
 	border-bottom: 1px solid #DDDDDD;
 	display: flex;
 	justify-content: space-between;
+}
+
+.information {
+	height: 80px;
 }
 
 .max_guest, .number_rooms, .number_bathrooms, .pet_friendly, .tv, .wifi {
