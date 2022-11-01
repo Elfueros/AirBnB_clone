@@ -54,6 +54,7 @@
 	height: 80px;
 	border-top: 1px solid #DDDDDD;
 	border-bottom: 1px solid #DDDDDD;
+	display: block;
 }
 
 .max_guest, .number_rooms, .number_bathrooms, .pet_friendly, .TV, .wifi {
