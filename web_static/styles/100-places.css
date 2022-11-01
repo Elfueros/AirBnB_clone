@@ -25,6 +25,7 @@
 .places article>h2 {
 	font-size: 30px;
 	text-align: center;
+	margin: 15px auto;
 }
 
 .places h3 {
@@ -51,6 +52,8 @@
 
 .information, .amenities, .reviews, .user, .description {
 	height: 80px;
+	width: 130px;
+	border: 0;
 	border-top: 1px solid #DDDDDD;
 	border-bottom: 1px solid #DDDDDD;
 }
