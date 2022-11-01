@@ -71,6 +71,6 @@ li {
 	margin-bottom: 10px;
 }
 
-.locations:hover .popover, .amenities:hover .popover {
+.locations:hover .popover, .amenities:hover .popover, .informations:hover .popover {
 	display: block;
 }
