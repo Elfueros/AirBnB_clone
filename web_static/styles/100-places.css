@@ -60,7 +60,7 @@
 
 .max_guest, .number_rooms, .number_bathrooms, .pet_friendly, .tv, .wifi {
 	background-repeat: no-repeat;
-	background-size: 25px;
+	background-size: 50px;
 
 }
 
