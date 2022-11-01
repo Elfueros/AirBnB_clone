@@ -57,7 +57,7 @@
 .number_bathrooms {
 	background-image: url("images/icon_bath.png");
 	background-repeat: no-repeat;
-	background-position: 20px;
+	background-size: cover;
 }
 
 .user strong {
