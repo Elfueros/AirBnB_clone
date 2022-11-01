@@ -52,7 +52,6 @@
 
 .information, .amenities, .reviews, .user, .description {
 	height: 80px;
-	width: 130px;
 	border: 0;
 	border-top: 1px solid #DDDDDD;
 	border-bottom: 1px solid #DDDDDD;
