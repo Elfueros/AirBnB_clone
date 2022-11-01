@@ -27,7 +27,6 @@
 .places article>h2 {
 	font-size: 30px;
 	text-align: center;
-	margin: 15px auto;
 }
 
 .places h3 {
@@ -62,7 +61,6 @@
 	background-repeat: no-repeat;
 	background-size: contain;
 	width: 100px;
-	margin: 50px auto;
 }
 
 .max_guest {
