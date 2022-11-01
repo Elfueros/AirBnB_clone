@@ -40,8 +40,10 @@
 
 .max_guest, .number_rooms, .number_bathrooms {
 	width: 100px;
+	height: 50px;
 	background-repeat: no-repeat;
 	background-size: content;
+
 }
 
 .max_guest {
