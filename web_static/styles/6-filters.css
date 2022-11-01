@@ -29,13 +29,13 @@ section.filters button:hover {
 
 /* location and amenities styling in search bar */
 
-.locations, .amenities {
+.filters .locations, .filters .amenities {
     height: 100%;
     width: 25%;
     float: left;
 }
 
-.locations {
+.filters .locations {
     border-right: 1px solid #DDDDDD;
 }
 
@@ -49,7 +49,7 @@ section.filters button:hover {
 }
 
 /* display location and amenities options upon hover */
-.popover {
+.filters .popover {
 	display: none;
 	background-color: #FAFAFA;
 	box-sizing: border-box;
@@ -61,7 +61,7 @@ section.filters button:hover {
 	padding-right: 30%;
 }
 
-.popover h2 {
+.filters .popover h2 {
 	font-size: 16px;
 }
 
@@ -71,6 +71,6 @@ li {
 	margin-bottom: 10px;
 }
 
-.locations:hover .popover, .amenities:hover .popover {
+.filters .locations:hover .popover, .filters .amenities:hover .popover {
 	display: block;
 }
