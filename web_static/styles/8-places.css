@@ -40,25 +40,20 @@
 
 .max_guest, .number_rooms, .number_bathrooms {
 	width: 100px;
-	display: inline-block;
+	background-repeat: no-repeat;
+	background-size: content;
 }
 
 .max_guest {
 	background-image: url("images/icon_group.png");
-	background-repeat: no-repeat;
-	background-size: content;
 }
 
 .number_rooms {
 	background-image: url("images/icon_bed.png");
-	background-repeat: no-repeat;
-	background-size: content;
 }
 
 .number_bathrooms {
 	background-image: url("images/icon_bath.png");
-	background-repeat: no-repeat;
-	background-size: content;
 }
 
 .user strong {
