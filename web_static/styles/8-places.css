@@ -41,6 +41,7 @@
 .max_guest, .number_rooms, .number_bathrooms {
 	width: 100px;
 	height: 50px;
+	float: left;
 	background-repeat: no-repeat;
 	background-size: content;
 
