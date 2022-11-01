@@ -2,6 +2,7 @@
 	text-align: center;
 	z-index: auto;
 	display: flex;
+	justify-content: space-between;
 }
 
 .places article {
@@ -57,6 +58,8 @@
 	height: 80px;
 	border-top: 1px solid #DDDDDD;
 	border-bottom: 1px solid #DDDDDD;
+	display: flex;
+	justify-content: space-between;
 }
 
 .max_guest, .number_rooms, .number_bathrooms, .pet_friendly, .tv, .wifi {
@@ -97,6 +100,11 @@ article .amenities, article .reviews {
 	margin-top: 40px;
 	display: none;
 	z-index: 1;
+}
+
+.places .amenities ul {
+	display: flex;
+	justify-content: space-between;
 }
 
 .places article:hover .amenities,
