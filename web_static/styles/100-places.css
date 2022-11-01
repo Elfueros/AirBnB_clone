@@ -1,6 +1,7 @@
 .places {
 	text-align: center;
 	z-index: auto;
+	overflow: auto;
 }
 
 .places h1 {
