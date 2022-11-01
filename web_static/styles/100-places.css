@@ -1,6 +1,15 @@
 .places {
 	text-align: center;
 	z-index: auto;
+}
+
+.places article {
+	width: 390px;
+	padding: 20px;
+	margin: 20px;
+	border: 1px solid #FF5A5F;
+	border-radius: 4px;
+	display: inline-block;
 	overflow: auto;
 }
 
@@ -25,15 +34,6 @@
 
 .places p {
 	font-size: 12px;
-}
-
-.places article {
-	width: 390px;
-	padding: 20px;
-	margin: 20px;
-	border: 1px solid #FF5A5F;
-	border-radius: 4px;
-	display: inline-block;
 }
 
 .places ul {
