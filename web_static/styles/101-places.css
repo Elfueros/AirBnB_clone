@@ -67,6 +67,13 @@
 
 .places .information {
 	height: 80px;
+	display: flex;
+	flex-flow: row nowrap;
+}
+
+.places .amenities ul {
+	display: flex;
+	flex-flow: row nowrap;
 }
 
 .max_guest, .number_rooms, .number_bathrooms, .pet_friendly, .tv, .wifi {
@@ -77,26 +84,32 @@
 
 .max_guest {
 	background-image: url("images/icon_group.png");
+	flex: 1 0 auto;
 }
 
 .number_rooms {
 	background-image: url("images/icon_bed.png");
+	flex: 1 0 auto;
 }
 
 .number_bathrooms {
 	background-image: url("images/icon_bath.png");
+	flex: 1 0 auto;
 }
 
 .pet_friendly {
 	background-image: url("images/icon_pets.png");
+	flex: 1 0 auto;
 }
 
 .tv {
 	background-image: url("images/icon_tv.png");
+	flex: 1 0 auto;
 }
 
 .wifi {
 	background-image: url("images/icon_wifi.png");
+	flex: 1 0 auto;
 }
 
 .user strong {
@@ -109,11 +122,7 @@ article .amenities, article .reviews {
 	z-index: 1;
 }
 
-.places .amenities ul {
-}
-
-.places article:hover .amenities,
-.places article:hover .reviews {
+.places article:hover .amenities, .places article:hover .reviews {
 	display: block;
 }
 
