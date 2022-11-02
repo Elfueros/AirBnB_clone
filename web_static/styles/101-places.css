@@ -8,7 +8,7 @@
 .places article {
 	display: flex;
 	flex-flow: column nowrap;
-	flex: 1 0 390px;
+	flex: 0 1 390px;
 	height: 300px;
 	padding: 20px;
 	margin: 20px;
