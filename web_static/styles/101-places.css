@@ -80,16 +80,17 @@
 	background-repeat: no-repeat;
 	background-size: contain;
 	width: 100px;
+	text-align: right;
 }
 
 .max_guest {
 	background-image: url("images/icon_group.png");
-	flex: 1 0 auto;
+	flex: 0 0 auto;
 }
 
 .number_rooms {
 	background-image: url("images/icon_bed.png");
-	flex: 1 0 auto;
+	flex: 0 0 auto;
 }
 
 .number_bathrooms {
