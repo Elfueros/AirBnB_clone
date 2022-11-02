@@ -87,32 +87,32 @@
 
 .max_guest {
 	background-image: url("images/icon_group.png");
-	flex: 1 1 auto;
+	flex: 0 0 auto;
 }
 
 .number_rooms {
 	background-image: url("images/icon_bed.png");
-	flex: 1 1 auto;
+	flex: 0 0 auto;
 }
 
 .number_bathrooms {
 	background-image: url("images/icon_bath.png");
-	flex: 1 1 auto;
+	flex: 0 0 auto;
 }
 
 .pet_friendly {
 	background-image: url("images/icon_pets.png");
-	flex: 1 1 auto;
+	flex: 0 0 auto;
 }
 
 .tv {
 	background-image: url("images/icon_tv.png");
-	flex: 1 1 auto;
+	flex: 0 0 auto;
 }
 
 .wifi {
 	background-image: url("images/icon_wifi.png");
-	flex: 1 1 auto;
+	flex: 0 0 auto;
 }
 
 .user strong {
